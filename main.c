@@ -37,6 +37,7 @@ void addCity();
 void displayCities();
 void renameCity();
 void removeCity();
+void inputDistance();
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
@@ -175,6 +176,27 @@ void inputDistance(){
     distance[destination][source] = dist;
 
     printf("Distance : %s <-> %s = %d km\n",cities[source], cities[destination], dist);
+}
+
+void displayDistanceTable(){
+    if(cityCount == 0){
+        printf("No cities available...\n");
+        return;
+    }
+    printf("\n___DISTANCE TABLE___\n");
+    printf("%-15s", "");
+    for(int i=0; i<cityCount; i++){
+        printf("%-10s", cities[i]);
+    }
+    printf("\n");
+
+    for(int i=0; i<cityCount; i++){
+        printf("%-15s", cities[i]);
+        for(int j=0; j<cityCount; j++){
+            printf("%-10d", distance[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 int main()
