@@ -38,6 +38,9 @@ void displayCities();
 void renameCity();
 void removeCity();
 void inputDistance();
+void inputDistance();
+void displayDistanceTable();
+void calculateCosts();
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
@@ -220,6 +223,80 @@ void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex){
 
     //final charge to customer
     deliveryCustomerCharge[deliveryIndex] = deliveryTotalCost[deliveryIndex] + deliveryProfit[deliveryIndex];
+}
+
+void deliveryRequest(){
+    displayCities();
+    if(cityCount<2){
+        printf("Need at least teo cities...\n");
+        return;
+    }
+
+    int source, destination, weight, typeOfVehicle;
+
+    printf("Enter the source city index : ");
+    scanf("%d", &source);
+    printf("Enter the destination city index : ");
+    scanf("%d", &destination);
+
+    if(source<0 || source>=cityCount || destination<0 || destination>=cityCount){
+        printf("Invalide city index...\n");
+        return;
+    }
+
+    if(source == destination){
+        printf("Source city and destination city cannot be same..\n");
+        return;
+    }
+
+    printf("Enter weight (kg) : ");
+    scanf("%d", &weight);
+
+    printf("\nVehicle Types\n");
+    for(int i=0; i<3; i++){
+        printf("%d. %s (Capacity : %d kg , Rate : %d LKR/km)\n",i+1, vehicleTypes[i], vehicleCapacity[i], vehicleRate[i]);
+
+    }
+    printf("Select vehicle type (1-3) : ");
+    scanf("%d", &typeOfVehicle);
+
+    if(typeOfVehicle<1 || typeOfVehicle>3){
+        printf("Invalid vehicle type...\n");
+        return;
+    }
+    typeOfVehicle--; //convert back to index starting from 0
+
+    if(weight > vehicleCapacity[typeOfVehicle]){
+        printf("Weight exceeds vehicle capacity...\n");
+        return;
+    }
+
+    int dist = distance[source][destination];
+    if(dist == 0){
+        printf("Distance haave not entered between these cities...\n");
+        return;
+    }
+
+    //using a temporary index for calculations
+    int tempIndex = deliveryCount;
+
+    strcpy(deliverySource[tempIndex], cities[source]);
+    strcpy(deliveryDestination[tempIndex], cities[destination]);
+    deliveryDistance[tempIndex] = dist;
+    deliveryWeight[tempIndex] = weight;
+    deliveryVehicleType[tempIndex] = typeOfVehicle;
+
+    calculateCosts(dist, weight, typeOfVehicle, tempIndex);
+    displayDeliveryEstimate{tempIndex};
+
+    int confirm;
+    printf("\nConfirm delivery ? (1=yes, 0=no) : ");
+    scanf("%d", &confirm);
+
+    if(confirm == 1){
+        deliveryCount++;
+        printf("Delivery Confirmed...\n");
+    }
 }
 
 int main()
