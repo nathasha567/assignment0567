@@ -31,6 +31,11 @@ double deliveryCustomerCharge[MAX_DELIVERIES];
 double deliveryTime[MAX_DELIVERIES];
 int deliveryCount = 0;
 
+//functions
+void displayMenu();
+void addCity();
+void displayCities();
+
 void displayMenu();
 
 void displayMenu(){
@@ -72,6 +77,18 @@ void addCity(){
     cityCount++;
     printf("City '%s' added successfully...\n",newCity);
 }
+
+void displayCities(){
+    if(cityCount == 0){
+        printf("No Cities Available...\n");
+        return;
+    }
+    printf("\n___CITIES___\n");
+    for(int i=0; i<cityCount; i++){
+        printf("%d. %s\n",i,cities[i]);
+    }
+}
+
 
 int main()
 {
