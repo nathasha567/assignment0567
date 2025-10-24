@@ -24,8 +24,8 @@ int deliveryDistance[MAX_DELIVERIES];
 int deliveryWeight[MAX_DELIVERIES];
 int deliveryVehicleType[MAX_DELIVERIES];
 double deliveryCost[MAX_DELIVERIES];
-double deliveryFuel[MAX_DELIVERIES];
-double deliveryTotal[MAX_DELIVERIES];
+double deliveryFuelCost[MAX_DELIVERIES];
+double deliveryTotalCost[MAX_DELIVERIES];
 double deliveryProfit[MAX_DELIVERIES];
 double deliveryCustomerCharge[MAX_DELIVERIES];
 double deliveryTime[MAX_DELIVERIES];
@@ -197,6 +197,29 @@ void displayDistanceTable(){
         }
         printf("\n");
     }
+}
+
+void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex){
+    // delivery cost
+    deliveryCost[deliveryIndex] = dist * vehicleRate[typeOfVehicle] * (1.0 + weight/10000.0);
+
+    //estimated delivery time
+    deliveryTime[deliveryIndex] = (double)dist / vehicleSpeed[typeOfVehicle];
+
+    //fuel consumption
+    double fuelUsed = (double)dist / vehicleEfficiency[typeOfVehicle];
+
+    //fuel cost
+    deliveryFuelCost[deliveryIndex] = fuelUsed * FUEL_PRICE;
+
+    //total operational cost
+    deliveryTotalCost[deliveryIndex] = deliveryCost[deliveryIndex] + deliveryFuelCost[deliveryIndex];
+
+    //profit
+    deliveryProfit[deliveryIndex] = deliveryCost[deliveryIndex] * 0.25;
+
+    //final charge to customer
+    deliveryCustomerCharge[deliveryIndex] = deliveryTotalCost[deliveryIndex] + deliveryProfit[deliveryIndex];
 }
 
 int main()
