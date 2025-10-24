@@ -41,6 +41,8 @@ void inputDistance();
 void displayDistanceTable();
 void calculateCosts();
 void deliveryRequest();
+void deliveryEstimate();
+void displayReport();
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
@@ -316,6 +318,47 @@ void deliveryEstimate(int deliveryIndex){
     printf("Customer Charge : %.2f LKR\n", deliveryCustomerCharge[deliveryIndex]);
     printf("Estimate Time : %.2f hours\n", deliveryTime[deliveryIndex]);
     printf("======================================================");
+}
+
+void displayReport(){
+    if(deliveryCount == 0){
+        printf("No deliveries recorded yet...\n");
+        return;
+    }
+
+    int totalDistance = 0;
+    double totalTime = 0;
+    double totalRevenue = 0;
+    double totalProfit = 0;
+    int longestDistance = deliveryDistance[0];
+    int shortestDistance = deliveryDistance[0];
+
+    for(int i=0; i<deliveryCount; i++){
+        totalDistance += deliveryDestination[i];
+        totalTime += deliveryTime[i];
+        totalRevenue += deliveryCustomerCharge[i];
+        totalProfit += deliveryProfit[i];
+
+        if(deliveryDistance[i] > longestDistance){
+            longestDistance = deliveryDistance[i];
+        }
+        if(deliveryDistance[i] < shortestDistance){
+            shortestDistance = deliveryDistance[i];
+        }
+    }
+
+    printf("\n======================================================\n");
+    printf("PERFOMANCE REPORT\n");
+    printf("======================================================\n");
+    printf("Total Deliveries : %d\n", deliveryCount);
+    printf("Total Distance Covered : %d km\n", totalDistance);
+    printf("Average Delivery Time : %.2f hours\n", totalTime/deliveryCount);
+    printf("Total Revenue : %.2f LKR\n", totalRevenue);
+    printf("Total Profit : %.2f LKR \n", totalProfit);
+    printf("Longest Route : %d km\n", longestDistance);
+    printf("Shortest Route : %d km\n", shortestDistance);
+    printf("======================================================\n");
+
 }
 
 int main()
