@@ -89,6 +89,27 @@ void displayCities(){
     }
 }
 
+void renameCity(){
+    displayCities();
+    if(cityCount == 0)
+        return;
+    int index;
+    printf("Enter city index to rename : ");
+    scanf("%d",&index);
+    getchar();
+
+    if(index<0 || index>=cityCount){
+        printf("Invalid index...\n");
+        return;
+    }
+    char newName[50];
+    printf("Enter New Name : ");
+    fgets(newName, 50, stdin);
+    newName[strcspn(newName, "\n")]=0;
+    printf("City '%s' renamed to '%s'\n",cities[index],newName);
+    strcpy(cities[index], newName);
+}
+
 
 int main()
 {
