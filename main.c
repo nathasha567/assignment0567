@@ -110,6 +110,40 @@ void renameCity(){
     strcpy(cities[index], newName);
 }
 
+void removeCity(){
+    displayCities();
+    if(cityCount == 0)
+        return;
+
+    int index;
+    printf("Enter city index to remove : ");
+    scanf("%d",&index);
+    getchar();
+
+    if(index<0 || index >= cityCount){
+        printf("Invalid Index...\n");
+        return;
+    }
+    printf("City '%s' removed.\n", cities[index]);
+
+    //shifting cities
+    for(int i=index; i<cityCount; i++){
+        strcpy(cities[i], cities[i+1]);
+    }
+
+    //shifting distance
+    for(int i=index; i<cityCount; i++){
+        for(int j=0; j<cityCount; j++){
+            distance[i][j] = distance[i+1][j];
+        }
+    }
+    for(int i=0; i<cityCount; i++){
+        for(int j=index; j<cityCount; j++){
+            distance[i][j] = distance[i][j+1];
+        }
+    }
+    cityCount--;
+}
 
 int main()
 {
