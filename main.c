@@ -35,8 +35,8 @@ int deliveryCount = 0;
 void displayMenu();
 void addCity();
 void displayCities();
-
-void displayMenu();
+void renameCity();
+void removeCity();
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
@@ -57,6 +57,7 @@ void addCity(){
         printf("Maximum city limit reached...\n");
         return;
     }
+
     char newCity[50];
     printf("Enter city name : ");
     fgets(newCity, 50, stdin);
@@ -70,6 +71,7 @@ void addCity(){
     }
     strcpy(cities[cityCount], newCity);
 
+    //distance
     for(int i=0; i<=cityCount; i++){
         distance[cityCount][i] = 0;
         distance[i][cityCount] = 0;
@@ -143,6 +145,36 @@ void removeCity(){
         }
     }
     cityCount--;
+}
+
+void inputDistance(){
+    displayCities();
+    if(cityCount<2){
+        printf("Need at least 2 cities...\n");
+        return;
+    }
+
+    int source, destination, dist; //dist is distance between source city and destination city
+    printf("Enter source city index : ");
+    scanf("%d",&source);
+    printf("Enter destination city index : ");
+    scanf("%d",&destination);
+
+    if(source<0 || source>=cityCount || destination<0 || destination>=cityCount){
+        printf("Invalid city index...\n");
+        return;
+    }
+    if(source == destination){
+        printf("Source city and destination city cannot be same...\n");
+        return;
+    }
+    printf("Enter the distance (km) : ");
+    scanf("%d",&dist);
+
+    distance[source][destination] = dist;
+    distance[destination][source] = dist;
+
+    printf("Distance : %s <-> %s = %d km\n",cities[source], cities[destination], dist);
 }
 
 int main()
