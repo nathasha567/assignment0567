@@ -38,9 +38,9 @@ void displayCities();
 void renameCity();
 void removeCity();
 void inputDistance();
-void inputDistance();
 void displayDistanceTable();
 void calculateCosts();
+void deliveryRequest();
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
@@ -297,6 +297,25 @@ void deliveryRequest(){
         deliveryCount++;
         printf("Delivery Confirmed...\n");
     }
+}
+
+void deliveryEstimate(int deliveryIndex){
+    printf("======================================================\n");
+    printf("DELIVERY COST ESTIMATION\n");
+    printf("------------------------------------------------------\n");
+    printf("From : %s\n", deliverySource[deliveryIndex]);
+    printf("To : %s\n", deliveryDestination[deliveryIndex]);
+    printf("Distance : %d km\n", deliveryDistance[deliveryIndex]);
+    printf("Vehicle : %s\n", vehicleTypes[deliveryVehicleType[deliveryIndex]]);
+    printf("Weight : %d kg\n", deliveryWeight[deliveryIndex]);
+    printf("------------------------------------------------------\n");
+    printf("Base Cost : %.2f LKR\n", deliveryCost[deliveryIndex]);
+    printf("Fuel Cost : %.2f LKR\n", deliveryFuelCost[deliveryIndex]);
+    printf("Operational Cost : %.2f LKR\n", deliveryTotalCost[deliveryIndex]);
+    printf("Profit (25%%) : %.2f LKR\n", deliveryProfit[deliveryIndex]);
+    printf("Customer Charge : %.2f LKR\n", deliveryCustomerCharge[deliveryIndex]);
+    printf("Estimate Time : %.2f hours\n", deliveryTime[deliveryIndex]);
+    printf("======================================================");
 }
 
 int main()
