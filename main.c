@@ -41,9 +41,9 @@ void inputDistance();
 void displayDistanceTable();
 void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex);
 void deliveryRequest();
-void deliveryEstimate();
+void deliveryEstimate(int deliveryIndex);
 void displayReport();
-int findShortestPath();
+int findShortestPath(int source, int destination, int *path);
 void findLeastCostRoute();
 
 int main(){
@@ -52,6 +52,7 @@ int main(){
         displayMenu();
         printf("Enter your choice : ");
         scanf("%d", &choice);
+        getchar();
 
         switch (choice){
         case 1:
@@ -124,7 +125,7 @@ void addCity(){
     }
 
     char newCity[50];
-    printf("Enter city name (type 'done' to stop) : \n");
+    printf("\nEnter city name (type 'done' to stop) : \n\n");
     getchar();
 
     while(1){
@@ -132,7 +133,7 @@ void addCity(){
         fgets(newCity, 50, stdin);
         newCity[strcspn(newCity, "\n")] = 0; //remove newline
 
-        if(strcasecmp(newCity, "done") == 0){
+        if(strcmp(newCity, "done") == 0){
             printf("\nStopped adding cities.\n\n");
             break;
         }
@@ -155,7 +156,7 @@ void addCity(){
 
         strcpy(cities[cityCount], newCity);
 
-        for(int i=o; i<=cityCount; i++){
+        for(int i=0; i<=cityCount; i++){
             distance[cityCount][i] = 0;
             distance[i][cityCount] = 0;
         }
@@ -164,6 +165,17 @@ void addCity(){
         printf("City '%s' added successfully\n\n", newCity);
     }
     printf("Total cities in system : %d\n\n", cityCount);
+}
+
+void displayCities(){
+    if(cityCount == 0){
+        printf("No cities available...\n");
+        return;
+    }
+    printf("\n___CITIES___\n");
+    for(int i=0; i<cityCount; i++){
+        printf("%d. %s\n", i, cities[i]);
+    }
 }
 
 void renameCity(){
@@ -235,7 +247,7 @@ void inputDistance(){
     printf("(Enter -1 for source city index to stop inputs)\n\n");
 
     while(1){
-        printf("Enter source city index (-1 to stop) : ");
+        printf("\nEnter source city index (-1 to stop) : ");
         scanf("%d", &source);
 
         if(source == -1){
@@ -261,8 +273,8 @@ void inputDistance(){
             printf("Invalid distance...\n");
             continue;
         }
-        distance[source][destination];
-        distance[destination][source];
+        distance[source][destination] = dist;
+        distance[destination][source] = dist;
 
         printf("Distance set : %s <-> %s = %d km\n", cities[source], cities[destination], dist);
     }
@@ -277,14 +289,14 @@ void displayDistanceTable(){
     printf("\n___DISTANCE TABLE___\n");
     printf("%-15s", "");
     for(int i=0; i<cityCount; i++){
-        printf("%-12s", cities[i]);
+        printf("%-15s", cities[i]);
     }
     printf("\n");
 
     for(int i=0; i<cityCount; i++){
         printf("%-15s", cities[i]);
         for(int j=0; j<cityCount; j++){
-            printf("%-10d", distance[i][j]);
+            printf("%-15d", distance[i][j]);
         }
         printf("\n");
     }
@@ -324,7 +336,7 @@ void deliveryRequest(){
     int source, destination, weight, typeOfVehicle;
 
     printf("\nEnter delivery requests.\n");
-    printf("(Enter -1 for source index to stop input\n\n)");
+    printf("(Enter -1 for source index to stop input)\n\n");
 
     while(1){
         printf("Enter the source city index(-1 to stop) : ");
@@ -342,7 +354,7 @@ void deliveryRequest(){
             continue;
         }
         if(source == destination){
-            printf("Distance and destination cannot be same...\n");
+            printf("Source city and destination city cannot be same...\n");
             continue;
         }
         int dist = distance[source][destination];
@@ -352,7 +364,7 @@ void deliveryRequest(){
         }
 
         printf("Enter weight (kg) : ");
-        scanf("&d", &weight);
+        scanf("%d", &weight);
 
         printf("\nVehicle Types\n");
         for(int i=0; i<3; i++){
@@ -378,7 +390,7 @@ void deliveryRequest(){
 
         strcpy(deliverySource[tempIndex], cities[source]);
         strcpy(deliveryDestination[tempIndex], cities[destination]);
-        deliveryDestination[tempIndex] = dist;
+        deliveryDistance[tempIndex] = dist;
         deliveryWeight[tempIndex] = weight;
         deliveryVehicleType[tempIndex] = typeOfVehicle;
 
@@ -393,7 +405,7 @@ void deliveryRequest(){
             deliveryCount++;
             printf("Delivery Confirmed.\n\n");
         }else{
-        printf("Delivery Cancelled.\n\n")}
+        printf("Delivery Cancelled.\n\n");}
     }
     printf("\nAll entered delivery requests processed successfully.\n\n");
 }
