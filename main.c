@@ -229,27 +229,44 @@ void inputDistance(){
         return;
     }
 
-    int source, destination, dist; //dist is distance between source city and destination city
-    printf("Enter source city index : ");
-    scanf("%d",&source);
-    printf("Enter destination city index : ");
-    scanf("%d",&destination);
+    int source, destination, dist;
 
-    if(source<0 || source>=cityCount || destination<0 || destination>=cityCount){
-        printf("Invalid city index...\n");
-        return;
+    printf("\nEnter distances between cities.\n");
+    printf("(Enter -1 for source city index to stop inputs)\n\n");
+
+    while(1){
+        printf("Enter source city index (-1 to stop) : ");
+        scanf("%d", &source);
+
+        if(source == -1){
+            printf("\nStopped entering distances.\n");
+            break;
+        }
+
+        printf("Enter destination city index : ");
+        scanf("%d", &destination);
+
+        if(source<0 || source>=cityCount || destination<0 || destination>=cityCount){
+            printf("Invalid city index...\n");
+            continue;
+        }
+        if(source == destination){
+            printf("Source city and destination city cannot be the same...\n");
+            continue;
+        }
+        printf("Enter the distance (km) : ");
+        scanf("%d", &dist);
+
+        if(dist <= 0){
+            printf("Invalid distance...\n");
+            continue;
+        }
+        distance[source][destination];
+        distance[destination][source];
+
+        printf("Distance set : %s <-> %s = %d km\n", cities[source], cities[destination], dist);
     }
-    if(source == destination){
-        printf("Source city and destination city cannot be same...\n");
-        return;
-    }
-    printf("Enter the distance (km) : ");
-    scanf("%d",&dist);
-
-    distance[source][destination] = dist;
-    distance[destination][source] = dist;
-
-    printf("Distance : %s <-> %s = %d km\n",cities[source], cities[destination], dist);
+    printf("\nAll entered distances updated successfully.\n\n");
 }
 
 void displayDistanceTable(){
