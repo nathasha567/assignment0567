@@ -426,6 +426,47 @@ int findShortestPath(int source, int destination, int *path){
     return shortestDistance[destination];
 }
 
+void findLeastCostRoute(){
+    displayCities();
+    if(cityCount<2){
+        printf("Need at least two cities...\n");
+        return;
+    }
+
+    int source, destination;
+    printf("Enter the source city index : ");
+    scanf("%d", &source);
+    printf("Enter the destination city index : ");
+    scanf("%d", &destination);
+
+    if(source<0 || source>=cityCount || destination<0 || destination>=cityCount){
+        printf("Invalid city index...\n");
+        return;
+    }
+
+    if(source == destination){
+        printf("Source city and destination city cannot be same...\n");
+        return;
+    }
+
+    int path[MAX_CITIES];
+    int minDistance = findShortestPath(source, destination, path);
+
+    if(minDistance == -1){
+        printf("No route found...\n");
+        return;
+    }
+
+    printf("\nShortest route from %s to %s : \n", cities[source], cities[destination]);
+    printf("Path : ");
+    for(int i=0; path[i] != -1; i++){
+        printf("%s", cities[path[i]]);
+        if(path[i+1] != -1)
+            printf(" -> ");
+    }
+    printf("\nTotal Distance : %d km\n", minDistance);
+}
+
 int main()
 {
 
