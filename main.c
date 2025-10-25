@@ -123,6 +123,7 @@ void addCity(){
 
     char newCity[50];
     printf("Enter city name : ");
+    getchar();
     fgets(newCity, 50, stdin);
     newCity[strcspn(newCity, "\n")] = 0;
 
@@ -140,7 +141,7 @@ void addCity(){
         distance[i][cityCount] = 0;
     }
     cityCount++;
-    printf("City '%s' added successfully...\n",newCity);
+    printf("\nCity '%s' added successfully...\n\n",newCity);
 }
 
 void displayCities(){
@@ -152,6 +153,7 @@ void displayCities(){
     for(int i=0; i<cityCount; i++){
         printf("%d. %s\n",i,cities[i]);
     }
+    printf("\n");
 }
 
 void renameCity(){
@@ -171,7 +173,7 @@ void renameCity(){
     printf("Enter New Name : ");
     fgets(newName, 50, stdin);
     newName[strcspn(newName, "\n")]=0;
-    printf("City '%s' renamed to '%s'\n",cities[index],newName);
+    printf("\nCity '%s' renamed to '%s'\n\n",cities[index],newName);
     strcpy(cities[index], newName);
 }
 
@@ -189,7 +191,7 @@ void removeCity(){
         printf("Invalid Index...\n");
         return;
     }
-    printf("City '%s' removed.\n", cities[index]);
+    printf("\nCity '%s' removed.\n\n", cities[index]);
 
     //shifting cities
     for(int i=index; i<cityCount; i++){
@@ -259,6 +261,7 @@ void displayDistanceTable(){
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex){
@@ -346,7 +349,7 @@ void deliveryRequest(){
     deliveryVehicleType[tempIndex] = typeOfVehicle;
 
     calculateCosts(dist, weight, typeOfVehicle, tempIndex);
-    displayDeliveryEstimate{tempIndex};
+    deliveryEstimate(tempIndex);
 
     int confirm;
     printf("\nConfirm delivery ? (1=yes, 0=no) : ");
@@ -356,10 +359,11 @@ void deliveryRequest(){
         deliveryCount++;
         printf("Delivery Confirmed...\n");
     }
+    printf("\n");
 }
 
 void deliveryEstimate(int deliveryIndex){
-    printf("======================================================\n");
+    printf("\n\n======================================================\n");
     printf("DELIVERY COST ESTIMATION\n");
     printf("------------------------------------------------------\n");
     printf("From : %s\n", deliverySource[deliveryIndex]);
@@ -374,7 +378,7 @@ void deliveryEstimate(int deliveryIndex){
     printf("Profit (25%%) : %.2f LKR\n", deliveryProfit[deliveryIndex]);
     printf("Customer Charge : %.2f LKR\n", deliveryCustomerCharge[deliveryIndex]);
     printf("Estimate Time : %.2f hours\n", deliveryTime[deliveryIndex]);
-    printf("======================================================");
+    printf("======================================================\n\n");
 }
 
 void displayReport(){
@@ -391,7 +395,7 @@ void displayReport(){
     int shortestDistance = deliveryDistance[0];
 
     for(int i=0; i<deliveryCount; i++){
-        totalDistance += deliveryDestination[i];
+        totalDistance += deliveryDistance[i];
         totalTime += deliveryTime[i];
         totalRevenue += deliveryCustomerCharge[i];
         totalProfit += deliveryProfit[i];
@@ -404,7 +408,7 @@ void displayReport(){
         }
     }
 
-    printf("\n======================================================\n");
+    printf("\n\n======================================================\n");
     printf("PERFOMANCE REPORT\n");
     printf("======================================================\n");
     printf("Total Deliveries : %d\n", deliveryCount);
@@ -414,7 +418,7 @@ void displayReport(){
     printf("Total Profit : %.2f LKR \n", totalProfit);
     printf("Longest Route : %d km\n", longestDistance);
     printf("Shortest Route : %d km\n", shortestDistance);
-    printf("======================================================\n");
+    printf("======================================================\n\n");
 }
 
 int findShortestPath(int source, int destination, int *path){
@@ -475,7 +479,7 @@ int findShortestPath(int source, int destination, int *path){
 
     //reverse path
     for(int i=tempIndex-1; i>=0; i--){
-        path[pathIndex++] = tempPath;
+        path[pathIndex++] = tempPath[i];
     }
     path[pathIndex++] = -1;
 
@@ -523,8 +527,3 @@ void findLeastCostRoute(){
     printf("\nTotal Distance : %d km\n", minDistance);
 }
 
-int main()
-{
-
-    return 0;
-}
