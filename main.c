@@ -43,6 +43,7 @@ void calculateCosts();
 void deliveryRequest();
 void deliveryEstimate();
 void displayReport();
+int findShortestPath();
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
@@ -358,7 +359,71 @@ void displayReport(){
     printf("Longest Route : %d km\n", longestDistance);
     printf("Shortest Route : %d km\n", shortestDistance);
     printf("======================================================\n");
+}
 
+int findShortestPath(int source, int destination, int *path){
+    int shortestDistance[MAX_CITIES];
+    int processed[MAX_CITIES];
+    int previous[MAX_CITIES];
+
+    for(int i=0; i<cityCount; i++){
+        shortestDistance[i] = -1; //-1 means not yet calculated
+        processed[i] = 0;
+        previous[i] = -1;
+    }
+    shortestDistance[source] = 0;
+
+    for(int count=0; count<cityCount-1; count++){
+        int min = -1, minIndex = -1;
+
+        //find unvisited with minimum distance
+        for(int a=0; a<cityCount; a++){
+            if(!processed[a] && shortestDistance[a] != -1){
+                if(min == -1 || shortestDistance[a] < min){
+                    min = shortestDistance[a];
+                    minIndex = a;
+                }
+            }
+        }
+        if(minIndex == -1)
+            break;
+        processed[minIndex] = 1;
+
+        //update distance
+        for(int a=0; a<cityCount; a++){
+            if(!processed[a] && distance[minIndex][a] && shortestDistance[minIndex] != -1){
+                int newDistance = shortestDistance[minIndex] + distance[minIndex][a];
+                if(shortestDistance[a] == -1 || newDistance < shortestDistance[a]){
+                    shortestDistance[a] = newDistance;
+                    previous[a] = minIndex;
+                }
+            }
+        }
+    }
+
+    //check if destination is reachable
+    if(shortestDistance[destination] == -1){
+        return -1;
+    }
+
+    //construct path
+    int pathIndex = 0;
+    int current = destination;
+    int tempPath[MAX_CITIES];
+    int tempIndex = 0;
+
+    while(current != -1){
+        tempPath[tempIndex++] = current;
+        current = previous[current];
+    }
+
+    //reverse path
+    for(int i=tempIndex-1; i>=0; i--){
+        path[pathIndex++] = tempPath;
+    }
+    path[pathIndex++] = -1;
+
+    return shortestDistance[destination];
 }
 
 int main()
