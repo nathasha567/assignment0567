@@ -124,38 +124,46 @@ void addCity(){
     }
 
     char newCity[50];
-    printf("Enter city name : ");
+    printf("Enter city name (type 'done' to stop) : \n");
     getchar();
-    fgets(newCity, 50, stdin);
-    newCity[strcspn(newCity, "\n")] = 0;
 
-    for(int i=0; i<cityCount; i++){
-        if(strcmp(cities[i], newCity) == 0){
-            printf("City already exists...\n");
-            return;
+    while(1){
+        printf("Enter city name : ");
+        fgets(newCity, 50, stdin);
+        newCity[strcspn(newCity, "\n")] = 0; //remove newline
+
+        if(strcasecmp(newCity, "done") == 0){
+            printf("\nStopped adding cities.\n\n");
+            break;
         }
-    }
-    strcpy(cities[cityCount], newCity);
 
-    //distance
-    for(int i=0; i<=cityCount; i++){
-        distance[cityCount][i] = 0;
-        distance[i][cityCount] = 0;
-    }
-    cityCount++;
-    printf("\nCity '%s' added successfully...\n\n",newCity);
-}
+        int exists = 0;
+        for(int i=0; i<cityCount; i++){
+            if(strcmp(cities[i], newCity) == 0){
+                printf("City '%s' already exists. Skipping...\n\n", newCity);
+                exists = 1;
+                break;
+            }
+        }
+        if(exists)
+            continue;
 
-void displayCities(){
-    if(cityCount == 0){
-        printf("No Cities Available...\n");
-        return;
+        if(cityCount>=MAX_CITIES){
+            printf("Maximum limit reached. Cannot add more cities...\n\n");
+            break;
+        }
+
+        strcpy(cities[cityCount], newCity);
+
+        for(int i=o; i<=cityCount; i++){
+            distance[cityCount][i] = 0;
+            distance[i][cityCount] = 0;
+        }
+
+        cityCount++;
+        printf("City '%s' added successfully\n\n", newCity);
     }
-    printf("\n___CITIES___\n");
-    for(int i=0; i<cityCount; i++){
-        printf("%d. %s\n",i,cities[i]);
-    }
-    printf("\n");
+    printf("Total cities in system : %d\n\n", cityCount);
 }
 
 void renameCity(){
