@@ -126,7 +126,6 @@ void addCity(){
 
     char newCity[50];
     printf("\nEnter city name (type 'done' to stop) : \n\n");
-    getchar();
 
     while(1){
         printf("Enter city name : ");
