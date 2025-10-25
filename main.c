@@ -44,6 +44,62 @@ void deliveryRequest();
 void deliveryEstimate();
 void displayReport();
 int findShortestPath();
+void findLeastCostRoute();
+
+int main(){
+    int choice;
+    while (1){
+        displayMenu();
+        printf("Enter your choice : ");
+        scanf("%d", &choice);
+
+        switch (choice){
+        case 1:
+            addCity();
+            break;
+
+        case 2:
+            renameCity();
+            break;
+
+        case 3:
+            removeCity();
+            break;
+
+        case 4:
+            displayCities();
+            break;
+
+        case 5:
+            inputDistance();
+            break;
+
+        case 6:
+            displayDistanceTable();
+            break;
+
+        case 7:
+            deliveryRequest();
+            break;
+
+        case 8:
+            findLeastCostRoute();
+            break;
+
+        case 9:
+            displayReport();
+            break;
+
+        case 10:
+            printf("Exiting...\n");
+            return 0;
+
+        default:
+            printf("Invalid choice...\n");
+        }
+    }
+    return 0;
+}
 
 void displayMenu(){
     printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
