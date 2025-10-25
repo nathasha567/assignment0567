@@ -39,7 +39,7 @@ void renameCity();
 void removeCity();
 void inputDistance();
 void displayDistanceTable();
-void calculateCosts();
+void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex);
 void deliveryRequest();
 void deliveryEstimate();
 void displayReport();
@@ -101,8 +101,10 @@ int main(){
     return 0;
 }
 
-void displayMenu(){
-    printf("LOGISTIC MANAGEMENT SYSTEM\n\n");
+void displayMenu() {
+    printf("\n=====================================\n");
+    printf("      LOGISTIC MANAGEMENT SYSTEM     \n");
+    printf("=====================================\n\n");
     printf("1. Add City\n");
     printf("2. Rename City\n");
     printf("3. Remove City\n");
@@ -250,7 +252,7 @@ void displayDistanceTable(){
     printf("\n___DISTANCE TABLE___\n");
     printf("%-15s", "");
     for(int i=0; i<cityCount; i++){
-        printf("%-10s", cities[i]);
+        printf("%-12s", cities[i]);
     }
     printf("\n");
 
@@ -281,7 +283,7 @@ void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex){
     deliveryTotalCost[deliveryIndex] = deliveryCost[deliveryIndex] + deliveryFuelCost[deliveryIndex];
 
     //profit
-    deliveryProfit[deliveryIndex] = deliveryCost[deliveryIndex] * 0.25;
+    deliveryProfit[deliveryIndex] = deliveryTotalCost[deliveryIndex] * 0.25;
 
     //final charge to customer
     deliveryCustomerCharge[deliveryIndex] = deliveryTotalCost[deliveryIndex] + deliveryProfit[deliveryIndex];
@@ -290,7 +292,7 @@ void calculateCosts(int dist, int weight, int typeOfVehicle, int deliveryIndex){
 void deliveryRequest(){
     displayCities();
     if(cityCount<2){
-        printf("Need at least teo cities...\n");
+        printf("Need at least two cities...\n");
         return;
     }
 
@@ -302,7 +304,7 @@ void deliveryRequest(){
     scanf("%d", &destination);
 
     if(source<0 || source>=cityCount || destination<0 || destination>=cityCount){
-        printf("Invalide city index...\n");
+        printf("Invalid city index...\n");
         return;
     }
 
@@ -335,7 +337,7 @@ void deliveryRequest(){
 
     int dist = distance[source][destination];
     if(dist == 0){
-        printf("Distance haave not entered between these cities...\n");
+        printf("Distance has not been entered between these cities...\n");
         return;
     }
 
@@ -373,6 +375,7 @@ void deliveryEstimate(int deliveryIndex){
     printf("Weight : %d kg\n", deliveryWeight[deliveryIndex]);
     printf("------------------------------------------------------\n");
     printf("Base Cost : %.2f LKR\n", deliveryCost[deliveryIndex]);
+    printf("Fuel Used : %.2f L\n", (double)deliveryDistance[deliveryIndex] / vehicleEfficiency[deliveryVehicleType[deliveryIndex]]);
     printf("Fuel Cost : %.2f LKR\n", deliveryFuelCost[deliveryIndex]);
     printf("Operational Cost : %.2f LKR\n", deliveryTotalCost[deliveryIndex]);
     printf("Profit (25%%) : %.2f LKR\n", deliveryProfit[deliveryIndex]);
@@ -409,7 +412,7 @@ void displayReport(){
     }
 
     printf("\n\n======================================================\n");
-    printf("PERFOMANCE REPORT\n");
+    printf("PERFORMANCE REPORT\n");
     printf("======================================================\n");
     printf("Total Deliveries : %d\n", deliveryCount);
     printf("Total Distance Covered : %d km\n", totalDistance);
@@ -481,7 +484,7 @@ int findShortestPath(int source, int destination, int *path){
     for(int i=tempIndex-1; i>=0; i--){
         path[pathIndex++] = tempPath[i];
     }
-    path[pathIndex++] = -1;
+    path[pathIndex] = -1;
 
     return shortestDistance[destination];
 }
